@@ -1,0 +1,88 @@
+<HTML>
+<head>
+<script src="lib/jquery3.2.1.js"></script>
+<style type='text/css'>
+.chunk {
+	list-style: none;
+	margin-left: 1px;
+	padding: 0;
+}
+.line {
+	margin-top: 1px;
+	list-style: none;
+	display: inline-block;
+	background: lightgray;
+	width:1px;
+	}
+</style>
+</head>
+<BODY>
+
+    <canvas id="board" style="float: left;width:20%"></canvas>
+    <div id='tree_root' class='chunk' >
+		<ul ></ul>
+	</div>
+<script>
+var DeepFirstTree = {
+	nodes: {'root':{'obj':'', 'depth':0, 'subs':{}}},
+	currentNode: '',
+	init: function(rootId){
+		DeepFirstTree.currentNode = DeepFirstTree.nodes.root;
+		DeepFirstTree.currentNode.obj = $('#' + rootId);
+	},
+	getCurrentDepth: function(){
+		return DeepFirstTree.currentNode.depth;
+	},
+	addSub: function(subText, subColor, subId){
+		var current = '';
+		var mc = DeepFirstTree.currentNode;
+		if(mc.subs[subId] != undefined ){
+			current = mc.subs[subId];
+			var p = current.obj.children('p');
+			p.text(subText);
+			p.css('color',subColor);
+		}else{
+			var li = $("<li class='chunk'></div>");
+			var p = $("<p style='color:"+subColor+"; display:inline; padding:0; margin-left:1px'>"+subText+"</p>");
+			current = $("<ul class='line'></ul>");
+			li.append(p);
+			li.append(current);
+			mc.obj.children('ul').append(li);
+			mc.subs[subId] = {'obj':li, 'depth': (mc.depth + 1), 'subs':{}};
+		}
+		DeepFirstTree.currentNode = mc.subs[subId];
+	}
+}
+
+DeepFirstTree.init('tree_root');
+DeepFirstTree.addSub('1','green','1');
+DeepFirstTree.addSub('1-1','green','1-1');
+DeepFirstTree.addSub('1-2','green','1-2');
+
+DeepFirstTree.init('tree_root');
+DeepFirstTree.addSub('2','green','2');
+
+DeepFirstTree.init('tree_root');
+DeepFirstTree.addSub('3','green','3');
+
+DeepFirstTree.init('tree_root');
+DeepFirstTree.addSub('1','green','1');
+DeepFirstTree.addSub('1-1-1','green','1-1-1');
+DeepFirstTree.addSub('1-1-2','green','1-1-2');
+
+DeepFirstTree.init('tree_root');
+DeepFirstTree.addSub('2','green','2');
+DeepFirstTree.addSub('2-1','green','2-1');
+DeepFirstTree.addSub('2-2','green','2-2');
+DeepFirstTree.addSub('2-3','green','2-3');
+DeepFirstTree.addSub('2-4','green','2-4');
+DeepFirstTree.addSub('2-5','green','2-5');
+
+
+DeepFirstTree.init('tree_root');
+DeepFirstTree.addSub('2','green','2');
+DeepFirstTree.addSub('2-1-1','green','2-1-1');
+DeepFirstTree.addSub('2-1-2','green','2-1-2');
+
+</script>
+</BODY>
